@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FastTracker</string>
+    <string name="you_re_not_fasting">You\'re not fasting!</string>
+    <string name="start_fasting">Start fasting</string>
+    <string name="you_re_fasting">You\'re fasting!</string>
+    <string name="stop_fasting">Stop fasting</string>
+    <string name="is_fasting">isFasting</string>
 </resources>
