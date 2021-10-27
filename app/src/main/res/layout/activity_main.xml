@@ -27,6 +27,15 @@
             android:text="@string/you_re_not_fasting" />
 
         <TextView
+            android:id="@+id/fastingSinceTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/_00_00_00"
+            android:textAlignment="center"
+            android:textSize="48sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/spacerTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
