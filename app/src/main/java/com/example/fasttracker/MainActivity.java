@@ -1,6 +1,7 @@
 package com.example.fasttracker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initUi() {
         fastingStatusTextView = findViewById(R.id.fastingStatusTextView);
-        fastingSinceTextView =  findViewById(R.id.fastingSinceTextView);
+        fastingSinceTextView = findViewById(R.id.fastingSinceTextView);
         fastingToggleButton = findViewById(R.id.fastingToggleButton);
         if (isFasting) {
             fastingStatusTextView.setText(R.string.you_re_fasting);
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 stopFastingSinceTimer();
                 fastingStatusTextView.setText(R.string.you_re_not_fasting);
                 fastingToggleButton.setText(R.string.start_fasting);
+                DialogFragment saveFastDialogFragment = new SaveFastDialogFragment();
+                saveFastDialogFragment.show(getSupportFragmentManager(), "SaveFastDialogFragment");
             } else {
                 isFasting = true;
                 fastingSince = System.currentTimeMillis();

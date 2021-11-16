@@ -1,5 +1,4 @@
 A basic intermittent fasting app for Android.
 
-User stories:
-1) The user wants to track if he's fasting or not fasting. -> Done
-2) The user wants to track since when he's fasting or not fasting.
+TODO01: Timer doesn't (re)start on resume?
+TODO02: Limit the fasting hours to 99 hours. Show warning dialog and reset the timer.
