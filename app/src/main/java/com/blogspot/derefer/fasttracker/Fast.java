@@ -12,6 +12,6 @@ public class Fast {
     }
 
     public String returnFastAsString() {
-        return "";
+        return id + ": " + begin + " - " + end;
     }
 }

@@ -13,15 +13,11 @@ import java.util.ArrayList;
 public class FastArrayAdapter extends RecyclerView.Adapter<FastArrayAdapter.ViewHolder> {
     // All methods in this adapter are required for a bare minimum RecyclerView adapter
     private int listItemLayout;
-    private ArrayList<Fast> itemList;
+    private ArrayList<Fast> fasts;
 
-    public FastArrayAdapter(int layoutId, ArrayList<Fast> itemList) {
+    public FastArrayAdapter(int layoutId, ArrayList<Fast> fasts) {
         listItemLayout = layoutId;
-        this.itemList = itemList;
-    }
-
-    public int getFastCount() {
-        return itemList == null ? 0 : itemList.size();
+        this.fasts = fasts;
     }
 
     // Specify the row layout file and click for each row
@@ -36,12 +32,12 @@ public class FastArrayAdapter extends RecyclerView.Adapter<FastArrayAdapter.View
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int listPosition) {
         TextView item = holder.item;
-        item.setText(itemList.get(listPosition).returnFastAsString());
+        item.setText(fasts.get(listPosition).returnFastAsString());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return fasts.size();
     }
 
     // Static inner class to initialize the views of rows

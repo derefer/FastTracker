@@ -36,7 +36,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/spacerTextView"
+            android:id="@+id/spacerTextView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp" />
@@ -46,5 +46,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/start_fasting" />
+
+        <TextView
+            android:id="@+id/spacerTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/previousFastsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Previous fasts:" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/previousFastsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
