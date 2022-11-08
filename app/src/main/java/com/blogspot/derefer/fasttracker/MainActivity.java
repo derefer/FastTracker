@@ -1,4 +1,4 @@
-package com.example.fasttracker;
+package com.blogspot.derefer.fasttracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -11,7 +11,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SaveFastDialogFragment.SaveFastDialogListener {
     private Button fastingToggleButton;
     private TextView fastingStatusTextView;
     private TextView fastingSinceTextView;
@@ -100,5 +100,15 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean(getString(R.string.is_fasting), isFasting);
         editor.putLong(getString(R.string.fasting_since), fastingSince);
         editor.apply();
+    }
+
+    @Override
+    public void onSaveFastDialogPositiveClick(DialogFragment dialog) {
+
+    }
+
+    @Override
+    public void onSaveFastDialogNegativeClick(DialogFragment dialog) {
+        // Nothing to do.
     }
 }

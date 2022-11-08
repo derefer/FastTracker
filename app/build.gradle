@@ -6,7 +6,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.example.fasttracker"
+        applicationId "com.blogspot.derefer.fasttracker"
         minSdk 23
         targetSdk 30
         versionCode 1

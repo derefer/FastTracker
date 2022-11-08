@@ -1,4 +1,4 @@
-package com.example.fasttracker;
+package com.blogspot.derefer.fasttracker;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.fasttracker", appContext.getPackageName());
+        assertEquals("com.blogspot.derefer.fasttracker", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.fasttracker;
+package com.blogspot.derefer.fasttracker;
 
 import org.junit.Test;
 
