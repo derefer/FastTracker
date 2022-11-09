@@ -2,6 +2,7 @@ package com.blogspot.derefer.fasttracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
@@ -13,7 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SaveFastDialogFragment.SaveFastDialogListener {
     private Button fastingToggleButton;
@@ -45,15 +45,18 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         ArrayList<Fast> list = new ArrayList<>();
         list.add(new Fast(1,100, 200));
         list.add(new Fast(2,101, 201));
         list.add(new Fast(3,102, 202));
+
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.previousFastsRecyclerView);
-        FastArrayAdapter adapter = new FastArrayAdapter(R.id.previousFastsRecyclerView, list);
-        //recyclerView.setAdapter(adapter);
-        setContentView(R.layout.activity_main);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        FastArrayAdapter adapter = new FastArrayAdapter(this, list);
+        //adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
         loadStoredData();
         initUi();
     }

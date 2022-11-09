@@ -1,5 +1,6 @@
 package com.blogspot.derefer.fasttracker;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +13,18 @@ import java.util.ArrayList;
 
 public class FastArrayAdapter extends RecyclerView.Adapter<FastArrayAdapter.ViewHolder> {
     // All methods in this adapter are required for a bare minimum RecyclerView adapter
-    private int listItemLayout;
     private ArrayList<Fast> fasts;
+    private LayoutInflater inflater;
 
-    public FastArrayAdapter(int layoutId, ArrayList<Fast> fasts) {
-        listItemLayout = layoutId;
+    public FastArrayAdapter(Context context, ArrayList<Fast> fasts) {
+        this.inflater = LayoutInflater.from(context);
         this.fasts = fasts;
     }
 
     // Specify the row layout file and click for each row
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(listItemLayout, parent, false);
+        View view = inflater.inflate(R.layout.recyclerview_row, parent, false);
         ViewHolder myViewHolder = new ViewHolder(view);
         return myViewHolder;
     }
@@ -45,8 +46,8 @@ public class FastArrayAdapter extends RecyclerView.Adapter<FastArrayAdapter.View
         public TextView item;
         public ViewHolder(View itemView) {
             super(itemView);
+            item = (TextView) itemView.findViewById(R.id.fastRowTextView);
             itemView.setOnClickListener(this);
-            //item = (TextView) itemView.findViewById(R.id.???);
         }
         @Override
         public void onClick(View view) {
