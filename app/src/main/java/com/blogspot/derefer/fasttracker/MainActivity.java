@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
     private boolean isFasting;
     private long fastingSince;
     private SharedPreferences sharedPreferences;
+    private ArrayList<Fast> previousFasts;
     private static final String LOG_TAG = MainActivity.class.getName();
     final private Handler handler = new Handler();
     final private Runnable fastingSinceTimer = new Runnable() {
@@ -46,18 +47,13 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ArrayList<Fast> list = new ArrayList<>();
-        list.add(new Fast(1,100, 200));
-        list.add(new Fast(2,101, 201));
-        list.add(new Fast(3,102, 202));
+        loadStoredData();
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.previousFastsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        FastArrayAdapter adapter = new FastArrayAdapter(this, list);
+        FastArrayAdapter adapter = new FastArrayAdapter(this, previousFasts);
         //adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
-        loadStoredData();
         initUi();
     }
 
@@ -65,6 +61,27 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         isFasting = sharedPreferences.getBoolean(getString(R.string.is_fasting), false);
         fastingSince = sharedPreferences.getLong(getString(R.string.fasting_since), 0);
+        previousFasts = getPreviousFasts();
+    }
+
+    private ArrayList<Fast> getPreviousFasts() {
+        // TODO: Load the list from a file
+        //   - Open file with a constant name
+        //   - Read line-by-line (id:long, begin:long, end:long)
+        //   - Extend the list
+        //   - The newest fast shall appear first
+        // https://stackoverflow.com/questions/8077530/android-get-current-timestamp
+        // https://stackoverflow.com/questions/56007124/how-do-i-convert-system-currenttimemillis-to-time-format-hhmmss
+        ArrayList<Fast> list = new ArrayList<>();
+        list.add(new Fast(1,101, 201));
+        list.add(new Fast(2,102, 202));
+        list.add(new Fast(3,103, 203));
+        list.add(new Fast(4,104, 204));
+        list.add(new Fast(5,105, 205));
+        list.add(new Fast(6,106, 206));
+        list.add(new Fast(7,107, 207));
+        list.add(new Fast(8,108, 208));
+        return list;
     }
 
     private void initUi() {
@@ -119,11 +136,14 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
 
     @Override
     public void onSaveFastDialogPositiveClick(DialogFragment dialog) {
-
+        // TODO: Insert the two timestamps into the file
+        //   - Reset the layout?
+        //   - The last id must be stored on load
+        //   -
     }
 
     @Override
     public void onSaveFastDialogNegativeClick(DialogFragment dialog) {
-        // Nothing to do.
+        // TODO: Reset the layout?
     }
 }
