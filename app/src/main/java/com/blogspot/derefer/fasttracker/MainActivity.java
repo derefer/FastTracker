@@ -13,6 +13,12 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SaveFastDialogFragment.SaveFastDialogListener {
@@ -72,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         //   - The newest fast shall appear first
         // https://stackoverflow.com/questions/8077530/android-get-current-timestamp
         // https://stackoverflow.com/questions/56007124/how-do-i-convert-system-currenttimemillis-to-time-format-hhmmss
+        String previousFastsFromFile = readFileToString("previous_fasts.txt");
+        Log.i(LOG_TAG, previousFastsFromFile);
+
         ArrayList<Fast> list = new ArrayList<>();
         list.add(new Fast(1,101, 201));
         list.add(new Fast(2,102, 202));
@@ -134,12 +143,47 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         editor.apply();
     }
 
+    private void writeStringToFile(final String fileContents, String fileName) {
+        Context context = getApplicationContext();
+        File path = context.getFilesDir();
+        File file = new File(path, "previous_fasts.txt"); // TODO: Use parameter
+        try {
+            FileOutputStream outStream = new FileOutputStream(file);
+            outStream.write("Hello from file!".getBytes());
+            outStream.close();
+        } catch (IOException e) {
+            // TODO: Review logging of exceptions properly
+            // https://stackoverflow.com/questions/4341363/android-print-full-exception-backtrace-to-log
+            Log.e(e.getClass().getName(), e.getMessage(), e);
+        }
+    }
+
+    private String readFileToString(String fileName) {
+        Context context = getApplicationContext();
+        StringBuilder stringBuilder = new StringBuilder();
+        BufferedReader inStream;
+        File path = context.getFilesDir();
+        File file = new File(path, "previous_fasts.txt"); // TODO: Use parameter
+        try {
+            inStream = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = inStream.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        } catch (FileNotFoundException e) {
+            Log.e(e.getClass().getName(), e.getMessage(), e);
+        } catch (IOException e) {
+            Log.e(e.getClass().getName(), e.getMessage(), e);
+        }
+        return stringBuilder.toString();
+    }
+
     @Override
     public void onSaveFastDialogPositiveClick(DialogFragment dialog) {
         // TODO: Insert the two timestamps into the file
         //   - Reset the layout?
         //   - The last id must be stored on load
-        //   -
+        writeStringToFile("Hello from file!", "previous_fasts.txt");
     }
 
     @Override
