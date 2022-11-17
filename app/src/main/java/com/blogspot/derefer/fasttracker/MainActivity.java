@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
     private SharedPreferences sharedPreferences;
     private ArrayList<Fast> previousFasts;
     private static final String LOG_TAG = MainActivity.class.getName();
+    private static final String PREVIOUS_FASTS_FILE_NAME = "previous_fasts.txt";
     final private Handler handler = new Handler();
     final private Runnable fastingSinceTimer = new Runnable() {
         @Override
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         //   - The newest fast shall appear first
         // https://stackoverflow.com/questions/8077530/android-get-current-timestamp
         // https://stackoverflow.com/questions/56007124/how-do-i-convert-system-currenttimemillis-to-time-format-hhmmss
-        String previousFastsFromFile = readFileToString("previous_fasts.txt");
+        String previousFastsFromFile = readFileToString(PREVIOUS_FASTS_FILE_NAME);
         Log.i(LOG_TAG, previousFastsFromFile);
 
         ArrayList<Fast> list = new ArrayList<>();
@@ -143,12 +144,12 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         editor.apply();
     }
 
-    private void writeStringToFile(final String fileContents, String fileName) {
+    private void appendStringToFile(final String fileContents, String fileName) {
         Context context = getApplicationContext();
         File path = context.getFilesDir();
-        File file = new File(path, "previous_fasts.txt"); // TODO: Use parameter
+        File file = new File(path, fileName);
         try {
-            FileOutputStream outStream = new FileOutputStream(file);
+            FileOutputStream outStream = new FileOutputStream(file, true);
             outStream.write("Hello from file!".getBytes());
             outStream.close();
         } catch (IOException e) {
@@ -158,12 +159,13 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         }
     }
 
+    // TODO: Return ArrayList<Fast>
     private String readFileToString(String fileName) {
         Context context = getApplicationContext();
         StringBuilder stringBuilder = new StringBuilder();
         BufferedReader inStream;
         File path = context.getFilesDir();
-        File file = new File(path, "previous_fasts.txt"); // TODO: Use parameter
+        File file = new File(path, fileName);
         try {
             inStream = new BufferedReader(new FileReader(file));
             String line;
@@ -183,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         // TODO: Insert the two timestamps into the file
         //   - Reset the layout?
         //   - The last id must be stored on load
-        writeStringToFile("Hello from file!", "previous_fasts.txt");
+        appendStringToFile("Hello from file!", PREVIOUS_FASTS_FILE_NAME);
     }
 
     @Override
