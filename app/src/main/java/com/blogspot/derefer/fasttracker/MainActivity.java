@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements SaveFastDialogFragment.SaveFastDialogListener {
@@ -28,8 +29,10 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
 
     private boolean isFasting;
     private long fastingSince;
+    private long fastedUntil;
     private SharedPreferences sharedPreferences;
     private ArrayList<Fast> previousFasts;
+    private long lastFastId;
     private static final String LOG_TAG = MainActivity.class.getName();
     private static final String PREVIOUS_FASTS_FILE_NAME = "previous_fasts.txt";
     final private Handler handler = new Handler();
@@ -79,19 +82,21 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         //   - The newest fast shall appear first
         // https://stackoverflow.com/questions/8077530/android-get-current-timestamp
         // https://stackoverflow.com/questions/56007124/how-do-i-convert-system-currenttimemillis-to-time-format-hhmmss
-        String previousFastsFromFile = readFileToString(PREVIOUS_FASTS_FILE_NAME);
-        Log.i(LOG_TAG, previousFastsFromFile);
+        long tmpFastId = 0;
+        String outputString = tmpFastId++ + "," + System.currentTimeMillis() + "," + System.currentTimeMillis() + "\n";
+        appendStringToFile(outputString, PREVIOUS_FASTS_FILE_NAME);
+        outputString = tmpFastId++ + "," + System.currentTimeMillis() + "," + System.currentTimeMillis() + "\n";
+        appendStringToFile(outputString, PREVIOUS_FASTS_FILE_NAME);
+        outputString = tmpFastId++ + "," + System.currentTimeMillis() + "," + System.currentTimeMillis() + "\n";
+        appendStringToFile(outputString, PREVIOUS_FASTS_FILE_NAME);
+        outputString = tmpFastId++ + "," + System.currentTimeMillis() + "," + System.currentTimeMillis() + "\n";
+        appendStringToFile(outputString, PREVIOUS_FASTS_FILE_NAME);
+        outputString = tmpFastId++ + "," + System.currentTimeMillis() + "," + System.currentTimeMillis() + "\n";
+        appendStringToFile(outputString, PREVIOUS_FASTS_FILE_NAME);
 
-        ArrayList<Fast> list = new ArrayList<>();
-        list.add(new Fast(1,101, 201));
-        list.add(new Fast(2,102, 202));
-        list.add(new Fast(3,103, 203));
-        list.add(new Fast(4,104, 204));
-        list.add(new Fast(5,105, 205));
-        list.add(new Fast(6,106, 206));
-        list.add(new Fast(7,107, 207));
-        list.add(new Fast(8,108, 208));
-        return list;
+        ArrayList<Fast> previousFastsFromFile = readFileToString(PREVIOUS_FASTS_FILE_NAME);
+
+        return previousFastsFromFile;
     }
 
     private void initUi() {
@@ -111,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
             if (isFasting) {
                 isFasting = false;
                 fastingSince = 0;
+                fastedUntil = System.currentTimeMillis();
                 stopFastingSinceTimer();
                 fastingStatusTextView.setText(R.string.you_re_not_fasting);
                 fastingToggleButton.setText(R.string.start_fasting);
@@ -119,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
             } else {
                 isFasting = true;
                 fastingSince = System.currentTimeMillis();
+                fastedUntil = 0;
                 startFastingSinceTimer();
                 fastingStatusTextView.setText(R.string.you_re_fasting);
                 fastingToggleButton.setText(R.string.stop_fasting);
@@ -150,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         File file = new File(path, fileName);
         try {
             FileOutputStream outStream = new FileOutputStream(file, true);
-            outStream.write("Hello from file!".getBytes());
+            outStream.write(fileContents.getBytes());
             outStream.close();
         } catch (IOException e) {
             // TODO: Review logging of exceptions properly
@@ -159,10 +166,9 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         }
     }
 
-    // TODO: Return ArrayList<Fast>
-    private String readFileToString(String fileName) {
+    private ArrayList<Fast> readFileToString(String fileName) {
         Context context = getApplicationContext();
-        StringBuilder stringBuilder = new StringBuilder();
+        ArrayList<Fast> previousFasts = new ArrayList<>();
         BufferedReader inStream;
         File path = context.getFilesDir();
         File file = new File(path, fileName);
@@ -170,14 +176,18 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
             inStream = new BufferedReader(new FileReader(file));
             String line;
             while ((line = inStream.readLine()) != null) {
-                stringBuilder.append(line);
+                String[] splittedLine = line.split(",");
+                long fastId = Long.parseLong(splittedLine[0]);
+                long fastBegin = Long.parseLong(splittedLine[1]);
+                long fastEnd = Long.parseLong(splittedLine[2]);
+                previousFasts.add(new Fast(fastId, fastBegin, fastEnd));
             }
         } catch (FileNotFoundException e) {
             Log.e(e.getClass().getName(), e.getMessage(), e);
         } catch (IOException e) {
             Log.e(e.getClass().getName(), e.getMessage(), e);
         }
-        return stringBuilder.toString();
+        return previousFasts;
     }
 
     @Override
@@ -185,7 +195,8 @@ public class MainActivity extends AppCompatActivity implements SaveFastDialogFra
         // TODO: Insert the two timestamps into the file
         //   - Reset the layout?
         //   - The last id must be stored on load
-        appendStringToFile("Hello from file!", PREVIOUS_FASTS_FILE_NAME);
+        String outputString = lastFastId + "," + fastingSince + "," + fastedUntil + "\n";
+        appendStringToFile(outputString, PREVIOUS_FASTS_FILE_NAME);
     }
 
     @Override
